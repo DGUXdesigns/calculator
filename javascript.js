@@ -6,11 +6,24 @@ const display = document.querySelector('.display');
 
 //Display functions
 function appendToDisplay(input) {
+    if (input === "." && display.value.includes(".")) {
+        // If display already has a decimal, ignore additional "."
+        return;
+    }
+
+    if (isNewInput) {
+        if (input !== ".") {
+            display.value = "";
+        }
+        isNewInput = false;
+    }
+
     if (isNewInput || isResultDisplayed) {
         display.value = "";
         isNewInput = false;
         isResultDisplayed = true; // Reset the flag
     }
+
     display.value += input;
 }
 
@@ -69,23 +82,34 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
     if (num2 === 0) {
-        return "Error"
+        return "Error";
     }
     return num1 / num2;
 };
 
 //operate function
 function operate(value1, operator, value2) {
+    let result;
+    
     switch(operator) {
         case '+':
-            return add(value1, value2);
+            result = add(value1, value2);
+            break;
         case '-':
-            return subtract(value1,value2);
+            result = subtract(value1, value2);
+            break;
         case '*':
-            return multiply(value1, value2);
-        case '/': 
-            return divide(value1, value2);
+            result = multiply(value1, value2);
+            break;
+        case '/':
+            result = divide(value1, value2);
+            break;
         default:
-            return "Error";
+            result = "Error";
     };
+    
+    if (typeof result === "number") {
+        result = parseFloat(result.toFixed(8)); // Set max decimals to 8 without trailing zeroes
+    }
+    return result;
 };
