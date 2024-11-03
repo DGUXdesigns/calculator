@@ -9,27 +9,36 @@ function appendToDisplay(input) {
     if (input === "." && display.value.includes(".")) {
         // If display already has a decimal, ignore additional "."
         return;
-    }
+    };
 
     if (isNewInput) {
         if (input !== ".") {
             display.value = "";
         }
         isNewInput = false;
-    }
+    };
 
     if (isNewInput || isResultDisplayed) {
         display.value = "";
         isNewInput = false;
         isResultDisplayed = true; // Reset the flag
-    }
+    };
 
     display.value += input;
-}
+};
+
+function backSpace() {
+    display.value = display.value.slice(0, -1);
+
+    if (display.value === "") {
+        isResultDisplayed = false;
+        isNewInput = true;
+    }
+};
 
 function negativeValue() {
     display.value = parseFloat(display.value) * (-1);
-}
+};
 
 function clearDisplay() {
     display.value = "";
@@ -37,7 +46,7 @@ function clearDisplay() {
     currentOperator = "";
     isNewInput = false;
     isResultDisplayed = false;
-}
+};
 
 // Store the current display value and set the operator
 function setOperator(operator) {
@@ -47,12 +56,12 @@ function setOperator(operator) {
         const newValue = parseFloat(display.value);
         storedValue = operate(storedValue, currentOperator, newValue);
         display.value = storedValue;
-    }
+    };
     
     currentOperator = operator; // Update to the new operator
     isNewInput = true; // Set flag to indicate the next input is a new number
     isResultDisplayed = false;
-}
+};
 
 // Calculate the result based on stored value, operator, and new input
 function calculate() {
@@ -64,8 +73,8 @@ function calculate() {
         isResultDisplayed = true;
     } else {
         display.value = "Error"; 
-    }
-}
+    };
+};
 
 //Basic operations
 function add(num1, num2) {
@@ -110,6 +119,25 @@ function operate(value1, operator, value2) {
     
     if (typeof result === "number") {
         result = parseFloat(result.toFixed(8)); // Set max decimals to 8 without trailing zeroes
-    }
+    };
     return result;
+};
+
+//calculate percentages
+function calculatePercentage() {
+    if (display.value) {
+        const currentValue = parseFloat(display.value);
+
+        if (storedValue !== null && currentOperator) {
+            // Calculate the percentage of the stored value
+            const percentageValue = (storedValue * currentValue) / 100;
+            // Apply the percentage in the context of the last operation
+            const result = operate(storedValue, currentOperator, percentageValue);
+            display.value = Number.isInteger(result) ? result : parseFloat(result.toFixed(8));
+            storedValue = result; // Update stored value for further calculations
+        } else {
+            // If no operator exists, just display the percentage
+            display.value = Number.isInteger(currentValue / 100) ? currentValue / 100 : parseFloat((currentValue / 100).toFixed(8));
+        };
+    };
 };
