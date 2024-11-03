@@ -31,7 +31,6 @@ function appendToDisplay(input) {
     } else {
         display.value += input;
     }
-    display.value += input;
 };
 
 function backSpace() {
