@@ -4,6 +4,8 @@ let isNewInput = false;
 let isResultDisplayed = false;
 const display = document.querySelector('.display');
 
+display.value = "0";
+
 //Display functions
 function appendToDisplay(input) {
     if (input === "." && display.value.includes(".")) {
@@ -24,6 +26,11 @@ function appendToDisplay(input) {
         isResultDisplayed = true; // Reset the flag
     };
 
+    if (display.value === "0") { 
+        display.value = input;
+    } else {
+        display.value += input;
+    }
     display.value += input;
 };
 
@@ -31,6 +38,7 @@ function backSpace() {
     display.value = display.value.slice(0, -1);
 
     if (display.value === "") {
+        display.value = "0";
         isResultDisplayed = false;
         isNewInput = true;
     }
@@ -41,6 +49,7 @@ function negativeValue() {
 };
 
 function clearDisplay() {
+    display.value = "0";
     display.value = "";
     storedValue = null;
     currentOperator = "";
@@ -141,3 +150,44 @@ function calculatePercentage() {
         };
     };
 };
+
+//Keyboard Support
+// Keyboard support
+function handleKeyPress(event) {
+    const key = event.key;
+
+    // Define key mappings for calculator operations
+    const operatorKeys = {
+        '+': '+',
+        '-': '-',
+        '*': '*',
+        '/': '/',
+        'Enter': '=', // Calculate the result
+        'Backspace': 'backspace', // Remove last character
+        'Escape': 'clear' // Clear display
+    };
+
+    // Check for number keys (0-9)
+    if (!isNaN(key)) {
+        appendToDisplay(key);
+    } 
+    // Check for operator keys
+    else if (operatorKeys[key]) {
+        if (key === 'Enter') {
+            calculate();
+        } else if (key === 'Backspace') {
+            backSpace();
+        } else if (key === 'Escape') {
+            clearDisplay();
+        } else {
+            setOperator(operatorKeys[key]);
+        }
+    } 
+    // Check for decimal point
+    else if (key === '.') {
+        appendToDisplay('.');
+    }
+}
+
+// Add event listener for keyboard input
+document.addEventListener('keydown', handleKeyPress);
