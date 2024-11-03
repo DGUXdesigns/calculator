@@ -1,47 +1,43 @@
 let storedValue = null;
+let isNewInput = false; 
 const display = document.querySelector('.display');
 
 //Display functions
 function appendToDisplay(input) {
+    if (isNewInput) {
+        display.value = "";
+        isNewInput = false; // Reset the flag
+    }
     display.value += input;
-};
+}
 
 function clearDisplay() {
-    display.value = ""
-};
+    display.value = "";
+    storedValue = null;
+    currentOperator = "";
+    isNewInput = false;
+}
 
-//Store Values
-function storeDisplayValue() {
-    if (display.value) { // Only store if there’s a value in the display
+// Store the current display value and set the operator
+function setOperator(operator) {
+    if (display.value) {
         storedValue = parseFloat(display.value);
-        display.value = ""; // Clear display after storing
+        currentOperator = operator;
+        isNewInput = true;
     }
-;}
+}
 
-
-//Calculate values
+// Calculate the result based on stored value, operator, and new input
 function calculate() {
-    const expression = display.value;
-    const operatorMatch = expression.match(/[\+\-\*\/]/); // Find the first operator in the string
-
-    if (operatorMatch) {
-        const operator = operatorMatch[0];
-        const [value1, value2] = expression.split(operator).map(Number); // Split by operator and convert to numbers
-
-        if (!isNaN(value1) && !isNaN(value2)) {
-            display.value = operate(value1, operator, value2);
-        } else {
-            display.value = "Error"; // Handle invalid inputs
-        }
-    } else if (storedValue !== null) {
-        // Use storedValue if there's no operator in the current display
-        display.value = storedValue;
-        storedValue = null; // Clear storedValue after using it
+    if (storedValue !== null && currentOperator && display.value) {
+        const newValue = parseFloat(display.value); 
+        display.value = operate(storedValue, currentOperator, newValue);
+        storedValue = null; // Clear stored value after calculation
+        currentOperator = "";
     } else {
-        display.value = "Error"; // Handle case where no operator is found
-    };
-};
-
+        display.value = "Error"; 
+    }
+}
 
 //Basic operations
 function add(num1, num2) {
@@ -62,7 +58,6 @@ function divide(num1, num2) {
     }
     return num1 / num2;
 };
-
 
 //operate function
 function operate(value1, operator, value2) {
