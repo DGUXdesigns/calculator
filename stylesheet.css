@@ -24,7 +24,7 @@ body {
     align-items: center;
 }
 
-.display-container {
+.display {
     width: 100%;
     text-align: right;
     border-radius: 8px;
@@ -77,4 +77,8 @@ button:hover {
 
 .operator {
     background-color: #737373;
+}
+
+.topThreeLeft {
+    background-color: brown;
 }
