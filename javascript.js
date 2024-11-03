@@ -1,11 +1,7 @@
-// let storedValue = null;
+let storedValue = null;
 const display = document.querySelector('.display');
-// Variables to store operands, operator, and the display value
-// let currentOperand = "";
-// let previousOperand = "";
-// let currentOperator = null;
-// let shouldResetDisplay = false; // To clear display after an operation
 
+//Display functions
 function appendToDisplay(input) {
     display.value += input;
 };
@@ -14,6 +10,16 @@ function clearDisplay() {
     display.value = ""
 };
 
+//Store Values
+function storeDisplayValue() {
+    if (display.value) { // Only store if there’s a value in the display
+        storedValue = parseFloat(display.value);
+        display.value = ""; // Clear display after storing
+    }
+;}
+
+
+//Calculate values
 function calculate() {
     const expression = display.value;
     const operatorMatch = expression.match(/[\+\-\*\/]/); // Find the first operator in the string
@@ -27,6 +33,10 @@ function calculate() {
         } else {
             display.value = "Error"; // Handle invalid inputs
         }
+    } else if (storedValue !== null) {
+        // Use storedValue if there's no operator in the current display
+        display.value = storedValue;
+        storedValue = null; // Clear storedValue after using it
     } else {
         display.value = "Error"; // Handle case where no operator is found
     };
