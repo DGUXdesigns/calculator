@@ -10,10 +10,10 @@
     <div class="calculator">
 			<input type="text" id="display" class="display">0</input>
 		<div class="button-container">
-			<button onclick="appendToDisplay('(')" class="operator">(</button>
-			<button onclick="appendToDisplay(')')" class="operator">)</button>
-			<button onclick="appendToDisplay('%')" class="operator">%</button>
-			<button onclick="clearDisplay()" class="operator">AC</button>
+			<button onclick="clearDisplay()" class="topThreeLeft">AC</button>
+			<button onclick="negativeValue()" class="topThreeLeft">+/-</button>
+			<button onclick="calculatePercentage()" class="topThreeLeft">%</button>
+			<button onclick="backSpace()" class="topThreeLeft">⌫</button>
 			<button onclick="appendToDisplay('7')" class="operand">7</button>
 			<button onclick="appendToDisplay('8')" class="operand">8</button>
 			<button onclick="appendToDisplay('9')" class="operand">9</button>
