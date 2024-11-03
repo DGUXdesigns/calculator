@@ -1,12 +1,15 @@
 let storedValue = null;
+let currentOperator = "";
 let isNewInput = false; 
+let isResultDisplayed = false;
 const display = document.querySelector('.display');
 
 //Display functions
 function appendToDisplay(input) {
-    if (isNewInput) {
+    if (isNewInput || isResultDisplayed) {
         display.value = "";
-        isNewInput = false; // Reset the flag
+        isNewInput = false;
+        isResultDisplayed = true; // Reset the flag
     }
     display.value += input;
 }
@@ -20,15 +23,22 @@ function clearDisplay() {
     storedValue = null;
     currentOperator = "";
     isNewInput = false;
+    isResultDisplayed = false;
 }
 
 // Store the current display value and set the operator
 function setOperator(operator) {
-    if (display.value) {
+    if (storedValue === null) {
         storedValue = parseFloat(display.value);
-        currentOperator = operator;
-        isNewInput = true;
+    } else if (currentOperator) {
+        const newValue = parseFloat(display.value);
+        storedValue = operate(storedValue, currentOperator, newValue);
+        display.value = storedValue;
     }
+    
+    currentOperator = operator; // Update to the new operator
+    isNewInput = true; // Set flag to indicate the next input is a new number
+    isResultDisplayed = false;
 }
 
 // Calculate the result based on stored value, operator, and new input
@@ -38,6 +48,7 @@ function calculate() {
         display.value = operate(storedValue, currentOperator, newValue);
         storedValue = null; // Clear stored value after calculation
         currentOperator = "";
+        isResultDisplayed = true;
     } else {
         display.value = "Error"; 
     }
@@ -58,7 +69,7 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
     if (num2 === 0) {
-        throw new Error("Cannot divide by zero");
+        return "Error"
     }
     return num1 / num2;
 };
