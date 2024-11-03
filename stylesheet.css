@@ -75,10 +75,18 @@ button:hover {
     background-color: #de9115;
 }
 
+.equal:hover{
+    background-color: #E2a44f;
+}
+
 .operator {
     background-color: #737373;
 }
 
 .topThreeLeft {
-    background-color: brown;
+    background-color: #d33131;
+}
+
+.topThreeLeft:hover {
+    background-color: #cd5050;
 }
