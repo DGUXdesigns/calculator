@@ -11,6 +11,10 @@ function appendToDisplay(input) {
     display.value += input;
 }
 
+function negativeValue() {
+    display.value = parseFloat(display.value) * (-1);
+}
+
 function clearDisplay() {
     display.value = "";
     storedValue = null;
