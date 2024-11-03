@@ -2,14 +2,14 @@ let storedValue = null;
 let currentOperator = "";
 let isNewInput = false; 
 let isResultDisplayed = false;
+
 const display = document.querySelector('.display');
 
 display.value = "0";
 
-//Display functions
+// Display functions
 function appendToDisplay(input) {
     if (input === "." && display.value.includes(".")) {
-        // If display already has a decimal, ignore additional "."
         return;
     };
 
@@ -25,6 +25,11 @@ function appendToDisplay(input) {
         isNewInput = false;
         isResultDisplayed = true; // Reset the flag
     };
+
+    if (isResultDisplayed) {
+        display.value = "";
+        isResultDisplayed = false;
+    }
 
     if (display.value === "0") { 
         display.value = input;
@@ -84,7 +89,7 @@ function calculate() {
     };
 };
 
-//Basic operations
+// Basic operations
 function add(num1, num2) {
     return num1 + num2;
 };
@@ -104,7 +109,7 @@ function divide(num1, num2) {
     return num1 / num2;
 };
 
-//operate function
+// Operate function
 function operate(value1, operator, value2) {
     let result;
     
@@ -131,13 +136,12 @@ function operate(value1, operator, value2) {
     return result;
 };
 
-//calculate percentages
+// Calculate percentages
 function calculatePercentage() {
     if (display.value) {
         const currentValue = parseFloat(display.value);
 
         if (storedValue !== null && currentOperator) {
-            // Calculate the percentage of the stored value
             const percentageValue = (storedValue * currentValue) / 100;
             // Apply the percentage in the context of the last operation
             const result = operate(storedValue, currentOperator, percentageValue);
@@ -150,9 +154,8 @@ function calculatePercentage() {
     };
 };
 
-//Keyboard Support
-// Keyboard support
-function handleKeyPress(event) {
+// Keyboard Support
+function KeyPress(event) {
     const key = event.key;
 
     // Define key mappings for calculator operations
@@ -161,9 +164,9 @@ function handleKeyPress(event) {
         '-': '-',
         '*': '*',
         '/': '/',
-        'Enter': '=', // Calculate the result
-        'Backspace': 'backspace', // Remove last character
-        'Escape': 'clear' // Clear display
+        'Enter': '=',
+        'Backspace': 'backspace',
+        'Escape': 'clear' //
     };
 
     // Check for number keys (0-9)
@@ -188,5 +191,4 @@ function handleKeyPress(event) {
     }
 }
 
-// Add event listener for keyboard input
-document.addEventListener('keydown', handleKeyPress);
+document.addEventListener('keydown', KeyPress);
